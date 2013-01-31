@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.google.android.gms.maps.MapFragment;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -82,6 +83,8 @@ public class MainActivity extends FragmentActivity implements
 		}
 		else{
 			//Display map fragment
+			MapFragment mapFragment = new MapFragment();
+			fragmentTransaction.replace(R.id.container, mapFragment);
 			
 		}
 	}
