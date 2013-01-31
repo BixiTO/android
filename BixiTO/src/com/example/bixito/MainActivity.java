@@ -62,7 +62,7 @@ public class MainActivity extends FragmentActivity implements
 		return true;
 	}
 
-	@Override
+	
 	public void onTabSelected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, show the tab contents in the
@@ -86,12 +86,12 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	@Override
+	
 	public void onTabUnselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
 
-	@Override
+	
 	public void onTabReselected(ActionBar.Tab tab,
 			FragmentTransaction fragmentTransaction) {
 	}
