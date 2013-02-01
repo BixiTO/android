@@ -1,4 +1,4 @@
-package com.example.bixito;
+package com.bixito;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -11,8 +11,8 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.example.bixito.station.BikeStation;
-import com.example.bixito.station.StationParser;
+import com.bixito.station.BikeStation;
+import com.bixito.station.StationParser;
 
 public class ListViewFragment extends ListFragment {
 	

@@ -1,4 +1,4 @@
-package com.example.bixito.station;
+package com.bixito.station;
 
 public class BikeStation {
 	int stationId;

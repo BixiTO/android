@@ -1,4 +1,4 @@
-package com.example.bixito.station;
+package com.bixito.station;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

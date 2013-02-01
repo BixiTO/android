@@ -1,4 +1,4 @@
-package com.example.bixito;
+package com.bixito;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.bixito.station.BikeStation;
+import com.bixito.station.BikeStation;
 
 public class ListViewAdapter extends BaseAdapter {
 
