@@ -7,7 +7,7 @@ public class BikeStation {
 	long lastCommWithServer;
 	double latitude;
 	double longitude;
-	boolean installed; //what is this?
+	boolean installed;
 	boolean locked;
 	boolean temporary;
 	boolean publicStation;
@@ -49,6 +49,14 @@ public class BikeStation {
 		setLatestUpdateTime(latestUpdateTime);
 		
 	}
+	
+	public BikeStation copy(){
+		return new BikeStation(stationId, stationName, terminalName, lastCommWithServer,
+				latitude, longitude, installed, locked, temporary,
+				publicStation, nbBikes, nbEmptyDocks, latestUpdateTime);
+	}
+	
+	public BikeStation(){}
 
 	/**
 	 * @return the stationId

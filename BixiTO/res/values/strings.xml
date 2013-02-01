@@ -2,10 +2,12 @@
 <resources>
 
     <string name="app_name">Bixi Toronto</string>
-    <string name="title_section3">Unused</string>
     <string name="title_section2">Map</string>
     <string name="title_section1">List</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-
+    <string name="bike_station_data_url">https://toronto.bixi.com/data/bikeStations.xml</string>
+	<string name="station_data_loading_dialog">Bixi Station Data is being loaded...</string>
+	<string name="loading">Loading</string>
+    
+    
 </resources>
