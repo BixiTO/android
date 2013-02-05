@@ -84,8 +84,10 @@ public class MainActivity extends FragmentActivity implements
 		}
 		else{
 			//Display map fragment
-			MapFragment mapFragment = new MapFragment();
-			fragmentTransaction.replace(R.id.container, mapFragment);
+			MapViewFragment mapViewFragment = new MapViewFragment();
+			fragmentTransaction.replace(R.id.container, mapViewFragment);
+			//MapFragment mapFragment = new MapFragment();
+			//fragmentTransaction.replace(R.id.container, mapFragment);
 			
 		}
 	}
