@@ -1,6 +1,9 @@
 package com.bixito.station;
 
-public class BikeStation {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class BikeStation implements Parcelable {
 	int stationId;
 	String stationName;
 	String terminalName;
@@ -48,6 +51,10 @@ public class BikeStation {
 		setNbEmptyDocks(nbEmptyDocks);
 		setLatestUpdateTime(latestUpdateTime);
 		
+	}
+	
+	public BikeStation(Parcel in){
+		readFromParcel(in);
 	}
 	
 	public BikeStation copy(){
@@ -238,6 +245,68 @@ public class BikeStation {
 	 */
 	public void setLatestUpdateTime(long latestUpdateTime) {
 		this.latestUpdateTime = latestUpdateTime;
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int arg1) {
+		dest.writeInt(getStationId());
+		dest.writeString(getStationName());
+		dest.writeString(getTerminalName());
+		dest.writeLong(getLastCommWithServer());
+		dest.writeDouble(getLatitude());
+		dest.writeDouble(getLongitude());
+		dest.writeByte(convertBooleanToByte(isInstalled()));
+		dest.writeByte(convertBooleanToByte(isLocked()));
+		dest.writeByte(convertBooleanToByte(isTemporary()));
+		dest.writeByte(convertBooleanToByte(isPublicStation()));
+		dest.writeInt(getNbBikes());
+		dest.writeInt(getNbEmptyDocks());
+		dest.writeLong(getLatestUpdateTime());
+	}
+	
+	public void readFromParcel(Parcel in){
+		stationId = in.readInt();
+		stationName = in.readString();
+		terminalName = in.readString();
+		lastCommWithServer = in.readLong();
+		latitude = in.readDouble();
+		longitude = in.readDouble();
+		installed = convertByteToBoolean(in.readByte());
+		locked = convertByteToBoolean(in.readByte());
+		temporary = convertByteToBoolean(in.readByte());
+		publicStation = convertByteToBoolean(in.readByte());
+		nbBikes = in.readInt();
+		nbEmptyDocks = in.readInt();
+		latestUpdateTime = in.readLong();
+		
+		
+		
+	}
+	
+	public static final Parcelable.Creator CREATOR =
+			new Parcelable.Creator(){
+				public BikeStation createFromParcel(Parcel in){
+					return new BikeStation(in);
+		
+				}
+
+				@Override
+				public Object[] newArray(int size) {
+					return new BikeStation[size];
+				}
+			};
+	
+	private byte convertBooleanToByte(Boolean input){
+		return (byte) (input ? 1 : 0);
+	}
+	
+	private Boolean convertByteToBoolean(byte input){
+		return input == 1;
 	}
 	
 }
