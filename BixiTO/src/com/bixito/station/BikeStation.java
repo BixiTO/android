@@ -2,6 +2,7 @@ package com.bixito.station;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 public class BikeStation implements Parcelable {
 	int stationId;
@@ -267,6 +268,7 @@ public class BikeStation implements Parcelable {
 		dest.writeInt(getNbBikes());
 		dest.writeInt(getNbEmptyDocks());
 		dest.writeLong(getLatestUpdateTime());
+		Log.d("DEBUG", "Finished packing object into a parcel.");
 	}
 	
 	public void readFromParcel(Parcel in){
@@ -283,7 +285,7 @@ public class BikeStation implements Parcelable {
 		nbBikes = in.readInt();
 		nbEmptyDocks = in.readInt();
 		latestUpdateTime = in.readLong();
-		
+		Log.d("DEBUG", "Finished converting object from Parcel");
 		
 		
 	}

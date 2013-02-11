@@ -8,8 +8,11 @@ import org.xml.sax.SAXException;
 
 import android.app.ListFragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ListView;
 
 import com.bixito.station.BikeStation;
 import com.bixito.station.StationParser;
@@ -23,6 +26,11 @@ public class ListViewFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		//Check if the savedInstanceState is null if so, initialize it
+		if(savedInstanceState == null){
+		}
+		
+		
 		//Get the bixi data to parse
 		try {
 			stationParser = new StationParser(getString(R.string.bike_station_data_url));
@@ -32,7 +40,6 @@ public class ListViewFragment extends ListFragment {
 		}
 
 		loadStationList();
-		
 		
 	}
 	
@@ -73,6 +80,17 @@ public class ListViewFragment extends ListFragment {
 		}
 		
 	
+		
+	}
+	
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		BikeStation selectedStation = stationList.get(position);
+
+		Intent i = new Intent(getActivity(), StationDetailActivity.class);
+		i.putExtra("com.bixito.station.BikeStation", selectedStation);
+		startActivity(i);
+		
 		
 	}
 	
