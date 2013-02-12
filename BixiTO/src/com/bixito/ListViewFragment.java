@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import org.xml.sax.SAXException;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -22,6 +23,7 @@ public class ListViewFragment extends ListFragment {
 	static private StationParser stationParser;
 	static private ArrayList<BikeStation> stationList;
 	ProgressDialog dialog;
+	ShareStationList shareStationList;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -75,6 +77,9 @@ public class ListViewFragment extends ListFragment {
 			dialog.dismiss();
 			ListViewAdapter adapter = new ListViewAdapter(getActivity(), stationList);
 			setListAdapter(adapter);
+			//Send the list over to the map fragment via the activity
+			shareStationList.shareList(stationList);
+			
 			//TODO: Make use of List_view layout
 
 		}
@@ -91,7 +96,21 @@ public class ListViewFragment extends ListFragment {
 		i.putExtra("com.bixito.station.BikeStation", selectedStation);
 		startActivity(i);
 		
-		
+	}
+	
+	public interface ShareStationList{
+		public void shareList(ArrayList<BikeStation> stationList);
+	}
+	
+	@Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+        	shareStationList = (ShareStationList) activity;
+        }
+        catch(ClassCastException e){
+        	throw new ClassCastException(activity.toString() + " must implement ShareStationList");
+        }
 	}
 	
 }

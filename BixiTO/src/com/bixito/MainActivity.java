@@ -1,10 +1,13 @@
 package com.bixito;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,10 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.MapFragment;
+import com.bixito.station.BikeStation;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+		ActionBar.TabListener,ListViewFragment.ShareStationList {
+	
+	private ArrayList<BikeStation> stationList = null;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -80,12 +85,12 @@ public class MainActivity extends FragmentActivity implements
 		if(tab.getPosition() == 0){
 			//Display list fragment
 			ListViewFragment listViewFragment = new ListViewFragment();
-			fragmentTransaction.replace(R.id.container, listViewFragment);
+			fragmentTransaction.replace(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
 		}
 		else{
 			//Display map fragment
 			MapViewFragment mapViewFragment = new MapViewFragment();
-			fragmentTransaction.replace(R.id.container, mapViewFragment);
+			fragmentTransaction.replace(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
 			//MapFragment mapFragment = new MapFragment();
 			//fragmentTransaction.replace(R.id.container, mapFragment);
 			
@@ -126,6 +131,21 @@ public class MainActivity extends FragmentActivity implements
 			textView.setText(Integer.toString(getArguments().getInt(
 					ARG_SECTION_NUMBER)));
 			return textView;
+		}
+	}
+
+	@Override
+	public void shareList(ArrayList<BikeStation> stationList) {
+		this.stationList = stationList;
+		Log.d("DEBUG", "Got back: " + stationList.size() + " stations from ListViewFragment.");
+		MapViewFragment mapViewFragment = (MapViewFragment) getFragmentManager().findFragmentByTag(getString(R.string.map_view_fragment_tag));
+		
+		if(mapViewFragment != null){
+			//Call a method to pass in the station list
+			mapViewFragment.updateStationList(stationList);
+		}
+		else{
+			Log.d("DEBUG", "I don't think it should ever get here...");
 		}
 	}
 
