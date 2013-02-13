@@ -90,7 +90,18 @@ public class MainActivity extends FragmentActivity implements
 		else{
 			//Display map fragment
 			MapViewFragment mapViewFragment = new MapViewFragment();
-			fragmentTransaction.replace(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
+			
+			//Send in the station list to the map view fragment
+			Bundle bundle = new Bundle();
+			if(stationList == null)
+				Log.w("WARNING", "Warning: Passing in a null station list to the map view fragment");
+			bundle.putParcelableArrayList("stationList", stationList);
+			Log.d("DEBUG", "Bundle size is: " + bundle.size());
+			mapViewFragment.setArguments(bundle);
+			Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
+			
+			getFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
+			//fragmentTransaction.replace(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
 			//MapFragment mapFragment = new MapFragment();
 			//fragmentTransaction.replace(R.id.container, mapFragment);
 			
@@ -138,15 +149,15 @@ public class MainActivity extends FragmentActivity implements
 	public void shareList(ArrayList<BikeStation> stationList) {
 		this.stationList = stationList;
 		Log.d("DEBUG", "Got back: " + stationList.size() + " stations from ListViewFragment.");
-		MapViewFragment mapViewFragment = (MapViewFragment) getFragmentManager().findFragmentByTag(getString(R.string.map_view_fragment_tag));
+		//MapViewFragment mapViewFragment = (MapViewFragment) getFragmentManager().findFragmentByTag(getString(R.string.map_view_fragment_tag));
 		
-		if(mapViewFragment != null){
+		/*if(mapViewFragment != null){
 			//Call a method to pass in the station list
 			mapViewFragment.updateStationList(stationList);
 		}
 		else{
 			Log.d("DEBUG", "I don't think it should ever get here...");
-		}
+		}*/
 	}
 
 }
