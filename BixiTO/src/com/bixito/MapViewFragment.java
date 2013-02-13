@@ -59,6 +59,7 @@ public class MapViewFragment extends MapFragment {
 			currentStation = stationList.get(i);
 			currentMarker.position(new LatLng(currentStation.getLatitude(), currentStation.getLongitude()));
 			currentMarker.title(currentStation.getStationName());
+			currentMarker.snippet("Bikes: " + currentStation.getNbBikes() + " Empty: " + currentStation.getNbEmptyDocks());
 			getMap().addMarker(currentMarker);
 		}
 	}
