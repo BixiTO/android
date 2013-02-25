@@ -39,9 +39,6 @@ public class MapViewFragment extends MapFragment implements LocationListener, Lo
 	private OnLocationChangedListener locationListener;
 	private LocationManager locationManager;
 	
-	//TODO implement onPause - pause location updates
-	//TODO implement onResume - resume location updates
-	
 	@Override
 	public View onCreateView(LayoutInflater arg0, ViewGroup arg1, Bundle savedInstanceState) {
 	    View view = super.onCreateView(arg0, arg1, savedInstanceState);
