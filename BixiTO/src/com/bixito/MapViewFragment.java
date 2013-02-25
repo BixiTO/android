@@ -2,6 +2,14 @@ package com.bixito;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +34,13 @@ public class MapViewFragment extends MapFragment {
 	    if(getArguments() != null){
 	    	stationList = getArguments().getParcelableArrayList("stationList");
 	    	Log.d("DEBUG", "Mapview got: " + stationList.size() + " stations.");
-	    	initMap();
+	    	if(googleMapsIsInstalled()){
+	    		initMap();
+	    	}
+	    	else{
+	    		//Tell user to install google maps
+	    		installGoogleMaps();
+	    	}
 	    }
 	    else
 	    	Log.d("DEBUG", "MapView has a null station list.");
@@ -50,6 +64,14 @@ public class MapViewFragment extends MapFragment {
 		
 	}
 	
+	private void installGoogleMaps(){
+		Builder b = new AlertDialog.Builder(getActivity());
+		b.setMessage(getString(R.string.google_maps_missing));
+		b.setPositiveButton(getString(R.string.google_maps_install_button), installGoogleMapsListener());
+		AlertDialog dialog = b.create();
+		dialog.show();
+	}
+	
 	private void placeMarkers(){
 		markerList = new ArrayList<MarkerOptions>();
 		MarkerOptions currentMarker;
@@ -68,5 +90,33 @@ public class MapViewFragment extends MapFragment {
 		this.stationList = stationList;
 		
 		Log.d("DEBUG", "Got: " + stationList.size() + " stations in the map.");
+	}
+	
+	public boolean googleMapsIsInstalled(){
+		try{
+			ApplicationInfo info = this.getActivity().getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0);
+			//If no exception is returned, then Google Maps is installed
+			return true;
+		}
+		catch(PackageManager.NameNotFoundException e){
+			//Google Maps is not installed
+			return false;
+		}
+	}
+	
+	public OnClickListener installGoogleMapsListener(){
+		return new OnClickListener(){
+
+			@Override
+			public void onClick(DialogInterface dialog, int arg1) {
+				
+				//Launch the market to install google maps
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps"));
+				startActivity(intent);
+				
+				getActivity().finish();
+			}
+			
+		};
 	}
 }
