@@ -9,6 +9,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,15 +20,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bixito.station.BikeStation;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapViewFragment extends MapFragment {
+public class MapViewFragment extends MapFragment implements LocationListener, LocationSource {
 	ArrayList<BikeStation> stationList = null;
 	ArrayList<MarkerOptions> markerList = null;
+	static final Long updateFreq = 1000L; //Every 1000 ms
+	static final Float updateDist = 10F; //10 Meters
+	static final Float defaultZoomLevel = 15F; //Ranges from 2 (Furthest) - 21 (Closest)
+	GoogleMap map;
+	
+	private OnLocationChangedListener locationListener;
+	private LocationManager locationManager;
+	
+	//TODO implement onPause - pause location updates
+	//TODO implement onResume - resume location updates
 	
 	@Override
 	public View onCreateView(LayoutInflater arg0, ViewGroup arg1, Bundle savedInstanceState) {
@@ -35,6 +50,7 @@ public class MapViewFragment extends MapFragment {
 	    	stationList = getArguments().getParcelableArrayList("stationList");
 	    	Log.d("DEBUG", "Mapview got: " + stationList.size() + " stations.");
 	    	if(googleMapsIsInstalled()){
+	    		updateUserLocation();
 	    		initMap();
 	    	}
 	    	else{
@@ -49,6 +65,23 @@ public class MapViewFragment extends MapFragment {
 	    return view;
 	}
 	
+	@Override
+	public void onPause(){
+		//Pause the location updates
+		if(locationManager != null){
+			locationManager.removeUpdates(this);
+		}
+		super.onPause();
+	}
+	
+	@Override
+	public void onResume(){
+		super.onResume();
+		if(locationManager != null){
+			map.setMyLocationEnabled(true);
+		}
+	}
+	
 	private void initMap(){
 		UiSettings mapsSettings = getMap().getUiSettings();
 
@@ -57,11 +90,38 @@ public class MapViewFragment extends MapFragment {
 		//m.title("Hello!");
 		//getMap().addMarker(m);
 		placeMarkers();
-		GoogleMap map = getMap();
+		map = getMap();
+		map.setLocationSource(this);
 		map.setMyLocationEnabled(true);
 		//map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		
 		
+	}
+	
+	private void updateUserLocation(){
+		locationManager = (LocationManager) getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+		
+		if(locationManager != null){
+			boolean gpsIsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+			boolean networkLocationIsEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			
+			if(gpsIsEnabled){
+				//Use gps to locate the user
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, updateFreq, updateDist, this);
+			}
+			else if(networkLocationIsEnabled){
+				//Locate user based on their network (less accurate)
+				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, updateFreq, updateDist, this);
+			}
+			else{
+				//TODO Show dialog telling user to enable location services
+				Log.d("DEBUG", "Location services not enabled.");
+			}
+		}
+		else{
+			//TODO Show dialog if something goes terribly wrong here with Location Manager
+			Log.d("DEBUG", "Something went wrong with location manager.");
+		}
 	}
 	
 	private void installGoogleMaps(){
@@ -118,5 +178,44 @@ public class MapViewFragment extends MapFragment {
 			}
 			
 		};
+	}
+
+	@Override
+	public void activate(OnLocationChangedListener locationChangedListener) {
+		locationListener = locationChangedListener;
+	}
+
+	@Override
+	public void deactivate() {
+		locationListener = null;
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		if(locationListener != null){
+			locationListener.onLocationChanged(location);
+			//Center camera on user
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), defaultZoomLevel));
+		}
+	}
+
+	//These methods aren't used or required?
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+		Log.d("DEBUG", "Maps onProviderDisabled method called.");
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+		Log.d("DEBUG", "Maps onProviderEnabled method called.");
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+		Log.d("DEBUG", "Maps onStatusChanged method called.");
+		
 	}
 }
