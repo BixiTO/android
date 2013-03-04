@@ -136,9 +136,11 @@ public class MapViewFragment extends MapFragment implements LocationListener, Lo
 		for(int i = 0; i < stationList.size(); i++){
 			currentMarker = new MarkerOptions();
 			currentStation = stationList.get(i);
+			
 			currentMarker.position(new LatLng(currentStation.getLatitude(), currentStation.getLongitude()));
 			currentMarker.title(currentStation.getStationName());
 			currentMarker.snippet("Bikes: " + currentStation.getNbBikes() + " Empty: " + currentStation.getNbEmptyDocks());
+			markerList.add(currentMarker);
 			getMap().addMarker(currentMarker);
 		}
 	}
