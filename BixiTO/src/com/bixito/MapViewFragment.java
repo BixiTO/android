@@ -23,17 +23,19 @@ import com.bixito.station.BikeStation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapViewFragment extends MapFragment implements LocationListener, LocationSource {
+public class MapViewFragment extends SupportMapFragment implements LocationListener, LocationSource {
 	ArrayList<BikeStation> stationList = null;
 	ArrayList<MarkerOptions> markerList = null;
 	static final Long updateFreq = 1000L; //Every 1000 ms
 	static final Float updateDist = 10F; //10 Meters
 	static final Float defaultZoomLevel = 15F; //Ranges from 2 (Furthest) - 21 (Closest)
+	private boolean mapIsLoaded = false;
+
 	GoogleMap map;
 	
 	private OnLocationChangedListener locationListener;
@@ -46,20 +48,24 @@ public class MapViewFragment extends MapFragment implements LocationListener, Lo
 	    if(getArguments() != null){
 	    	stationList = getArguments().getParcelableArrayList("stationList");
 	    	Log.d("DEBUG", "Mapview got: " + stationList.size() + " stations.");
-	    	if(googleMapsIsInstalled()){
-	    		updateUserLocation();
-	    		initMap();
-	    	}
-	    	else{
-	    		//Tell user to install google maps
-	    		installGoogleMaps();
-	    	}
+	    	init();
 	    }
 	    else
 	    	Log.d("DEBUG", "MapView has a null station list.");
 	    
 	    
 	    return view;
+	}
+	
+	public void init(){
+		if(googleMapsIsInstalled()){
+    		updateUserLocation();
+    		initMap();
+    	}
+    	else{
+    		//Tell user to install google maps
+    		installGoogleMaps();
+    	}
 	}
 	
 	@Override
@@ -90,6 +96,7 @@ public class MapViewFragment extends MapFragment implements LocationListener, Lo
 		map = getMap();
 		map.setLocationSource(this);
 		map.setMyLocationEnabled(true);
+		mapIsLoaded = true;
 		//map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		
 		
@@ -130,6 +137,8 @@ public class MapViewFragment extends MapFragment implements LocationListener, Lo
 	}
 	
 	private void placeMarkers(){
+		Log.d("DEBUG", "Station list size: " + stationList.size());
+		
 		markerList = new ArrayList<MarkerOptions>();
 		MarkerOptions currentMarker;
 		BikeStation currentStation = null;
@@ -143,11 +152,20 @@ public class MapViewFragment extends MapFragment implements LocationListener, Lo
 			markerList.add(currentMarker);
 			getMap().addMarker(currentMarker);
 		}
+		
 	}
 	
+	public void updateMarkers(){
+		getMap().clear();
+		placeMarkers();
+	}
 	public void updateStationList(ArrayList<BikeStation> stationList){
+		Log.d("DEBUG", "Update map called.");
 		this.stationList = stationList;
-		
+		if(!mapIsLoaded)
+			init();
+		else
+			updateMarkers();
 		Log.d("DEBUG", "Got: " + stationList.size() + " stations in the map.");
 	}
 	

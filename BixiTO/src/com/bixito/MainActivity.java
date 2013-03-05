@@ -2,24 +2,24 @@ package com.bixito;
 
 import java.util.ArrayList;
 
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
 import com.bixito.station.BikeStation;
 
-public class MainActivity extends FragmentActivity implements
+public class MainActivity extends SherlockFragmentActivity implements
 		ActionBar.TabListener,ListViewFragment.ShareStationList {
-	
 	private ArrayList<BikeStation> stationList = null;
 
 	/**
@@ -31,25 +31,42 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		//Prevent overlapping fragments
+		if(savedInstanceState != null)
+			return;
+		
 		setContentView(R.layout.activity_main);
 
-		// Set up the action bar to show tabs.
-		final ActionBar actionBar = getActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		// For each of the sections in the app, add a tab to the action bar.
-		actionBar.addTab(actionBar.newTab().setText(R.string.title_section1)
-				.setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText(R.string.title_section2)
-				.setTabListener(this));
 		
+		if(findViewById(R.id.container) != null){
+			//We're in phone mode
+			Log.d("DEBUG", "This device is a phone.");
+			//Setup action bar to show tabs
+			final ActionBar actionBar = getSupportActionBar();
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+			// For each of the sections in the app, add a tab to the action bar.
+			actionBar.addTab(actionBar.newTab().setText(R.string.title_section1)
+					.setTabListener(this));
+			actionBar.addTab(actionBar.newTab().setText(R.string.title_section2)
+					.setTabListener(this));
+		
+		}
+		else{
+			Log.d("DEBUG", "This device is a tablet.");
+			
+			//ListViewFragment listFrag = new ListViewFragment();
+			//MapViewFragment mapFrag = new MapViewFragment();
+			//getSupportFragmentManager().beginTransaction().add(R.id.list_view_fragment, listFrag).add(R.id.map_view_fragment, mapFrag).commit();
+		}
 
 	}
 
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		// Restore the previously serialized current tab position.
-		if (savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
+		if (findViewById(R.id.container) != null && savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
 			getActionBar().setSelectedNavigationItem(
 					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
 		}
@@ -58,20 +75,28 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		// Serialize the current tab position.
-		outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+		if(findViewById(R.id.container) != null)
+			outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
 				.getSelectedNavigationIndex());
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
+		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-
 	
-	public void onTabSelected(ActionBar.Tab tab,
-			FragmentTransaction fragmentTransaction) {
+	/*
+	 * @Override
+	public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+	 */
+
+	@Override
+	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, show the tab contents in the
 		// container view.
 		/*Fragment fragment = new DummySectionFragment();
@@ -100,7 +125,7 @@ public class MainActivity extends FragmentActivity implements
 			mapViewFragment.setArguments(bundle);
 			Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
 			
-			getFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
+			getSupportFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
 			//fragmentTransaction.replace(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
 			//MapFragment mapFragment = new MapFragment();
 			//fragmentTransaction.replace(R.id.container, mapFragment);
@@ -151,13 +176,21 @@ public class MainActivity extends FragmentActivity implements
 		Log.d("DEBUG", "Got back: " + stationList.size() + " stations from ListViewFragment.");
 		//MapViewFragment mapViewFragment = (MapViewFragment) getFragmentManager().findFragmentByTag(getString(R.string.map_view_fragment_tag));
 		
-		/*if(mapViewFragment != null){
+		if(getSupportFragmentManager().findFragmentById(R.id.map_view_fragment) != null){
 			//Call a method to pass in the station list
+			MapViewFragment mapViewFragment = (MapViewFragment) getSupportFragmentManager().findFragmentById(R.id.map_view_fragment);
 			mapViewFragment.updateStationList(stationList);
+			//(MapViewFragment) findViewById(R.id.map_view_fragment).updateStationList(stationList);
 		}
 		else{
-			Log.d("DEBUG", "I don't think it should ever get here...");
-		}*/
+			Log.d("DEBUG", "");
+		}
 	}
+
+	
+
+	
+
+
 
 }

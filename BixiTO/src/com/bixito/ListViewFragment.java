@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
-import android.app.ListFragment;
+import android.support.v4.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
