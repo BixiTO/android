@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import com.bixito.station.BikeStation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.CancelableCallback;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -31,9 +32,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapViewFragment extends SupportMapFragment implements LocationListener, LocationSource {
 	ArrayList<BikeStation> stationList = null;
 	ArrayList<MarkerOptions> markerList = null;
+	static final Float initialZoomLevel = 10F;
+	static final double initialLongitude = -79.40;
+	static final double initialLatitude = 43.65;
+	static LatLng initialCameraLocation = new LatLng(initialLatitude, initialLongitude);
+	static final int initialAnimateTime = 1;
+	
 	static final Long updateFreq = 1000L; //Every 1000 ms
 	static final Float updateDist = 10F; //10 Meters
-	static final Float defaultZoomLevel = 15F; //Ranges from 2 (Furthest) - 21 (Closest)
+	static final Float defaultZoomLevel = 17F; //Ranges from 2 (Furthest) - 21 (Closest)
 	private boolean mapIsLoaded = false;
 
 	GoogleMap map;
@@ -87,13 +94,20 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	
 	private void initMap(){
 		UiSettings mapsSettings = getMap().getUiSettings();
-
-		//MarkerOptions m = new MarkerOptions();
-		//m.position(new LatLng(40, 40));
-		//m.title("Hello!");
-		//getMap().addMarker(m);
+		
 		placeMarkers();
 		map = getMap();
+		if(!mapIsLoaded){
+			//Map is loading for the first time, so move the camera to Toronto until we get the GPS location	
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(initialCameraLocation, initialZoomLevel), initialAnimateTime, new CancelableCallback() {
+		        @Override
+		        public void onFinish() {}
+		        @Override
+		        public void onCancel() {}
+		    });
+			
+
+		}
 		map.setLocationSource(this);
 		map.setMyLocationEnabled(true);
 		mapIsLoaded = true;
