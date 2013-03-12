@@ -32,12 +32,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		//Prevent overlapping fragments
-		if(savedInstanceState != null)
-			return;
-		
 		setContentView(R.layout.activity_main);
-
+		
 		
 		if(findViewById(R.id.container) != null){
 			//We're in phone mode

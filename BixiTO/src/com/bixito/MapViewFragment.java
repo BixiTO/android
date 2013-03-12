@@ -52,14 +52,16 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	public View onCreateView(LayoutInflater arg0, ViewGroup arg1, Bundle savedInstanceState) {
 	    View view = super.onCreateView(arg0, arg1, savedInstanceState);
 	    
-	    if(getArguments() != null){
-	    	stationList = getArguments().getParcelableArrayList("stationList");
-	    	Log.d("DEBUG", "Mapview got: " + stationList.size() + " stations.");
-	    	init();
+	    if(savedInstanceState == null){
+		    setRetainInstance(true);
+		    if(getArguments() != null){
+		    	stationList = getArguments().getParcelableArrayList("stationList");
+		    	Log.d("DEBUG", "Mapview got: " + stationList.size() + " stations.");
+		    	init();
+		    }
+		    else
+		    	Log.d("DEBUG", "MapView has a null station list.");
 	    }
-	    else
-	    	Log.d("DEBUG", "MapView has a null station list.");
-	    
 	    
 	    return view;
 	}

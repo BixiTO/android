@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
-import android.support.v4.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
@@ -30,18 +31,20 @@ public class ListViewFragment extends ListFragment {
 		
 		//Check if the savedInstanceState is null if so, initialize it
 		if(savedInstanceState == null){
-		}
-		
-		
-		//Get the bixi data to parse
-		try {
-			stationParser = new StationParser(getString(R.string.bike_station_data_url));
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			Log.d("DEBUG", "savedInstanceState was null in ListViewFrag");
+			setRetainInstance(true);
 
-		loadStationList();
+			//Get the bixi data to parse
+			try {
+				stationParser = new StationParser(getString(R.string.bike_station_data_url));
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			loadStationList();
+		}
+		
 		
 	}
 	
