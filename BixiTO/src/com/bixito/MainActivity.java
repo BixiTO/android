@@ -67,7 +67,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		// Restore the previously serialized current tab position.
 		if (findViewById(R.id.container) != null && savedInstanceState.containsKey(STATE_SELECTED_NAVIGATION_ITEM)) {
-			getActionBar().setSelectedNavigationItem(
+			getSupportActionBar().setSelectedNavigationItem(
 					savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
 		}
 	}
@@ -76,7 +76,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public void onSaveInstanceState(Bundle outState) {
 		// Serialize the current tab position.
 		if(findViewById(R.id.container) != null)
-			outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getActionBar()
+			outState.putInt(STATE_SELECTED_NAVIGATION_ITEM, getSupportActionBar()
 				.getSelectedNavigationIndex());
 	}
 
