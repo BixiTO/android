@@ -20,7 +20,10 @@ import com.bixito.station.BikeStation;
 
 public class MainActivity extends SherlockFragmentActivity implements
 		ActionBar.TabListener,ListViewFragment.ShareStationList {
+	
 	private ArrayList<BikeStation> stationList = null;
+	private ListViewFragment listViewFragment;
+	private MapViewFragment mapViewFragment;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -38,6 +41,11 @@ public class MainActivity extends SherlockFragmentActivity implements
 		if(findViewById(R.id.container) != null){
 			//We're in phone mode
 			Log.d("DEBUG", "This device is a phone.");
+			
+			//crate ListView and MapView fragments
+			listViewFragment = new ListViewFragment();
+			mapViewFragment = new MapViewFragment();
+			
 			//Setup action bar to show tabs
 			final ActionBar actionBar = getSupportActionBar();
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -103,15 +111,13 @@ public class MainActivity extends SherlockFragmentActivity implements
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.container, fragment).commit();*/
 		
+		//tab position 0 references the LIST tab
 		if(tab.getPosition() == 0){
 			//Display list fragment
-			ListViewFragment listViewFragment = new ListViewFragment();
 			fragmentTransaction.replace(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
 		}
+		//tab position 1 references the PAM tab
 		else{
-			//Display map fragment
-			MapViewFragment mapViewFragment = new MapViewFragment();
-			
 			//Send in the station list to the map view fragment
 			Bundle bundle = new Bundle();
 			if(stationList == null)
@@ -121,6 +127,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			mapViewFragment.setArguments(bundle);
 			Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
 			
+			//Display map fragment			
 			getSupportFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
 			//fragmentTransaction.replace(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
 			//MapFragment mapFragment = new MapFragment();
