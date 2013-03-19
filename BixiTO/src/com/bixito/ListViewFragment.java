@@ -26,6 +26,7 @@ public class ListViewFragment extends ListFragment {
 	ProgressDialog dialog;
 	ShareStationList shareStationList;
 
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -41,8 +42,11 @@ public class ListViewFragment extends ListFragment {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			Log.d("DEBUG", "list view frag was created ---");
 
 			loadStationList();
+			
 		}
 		
 		

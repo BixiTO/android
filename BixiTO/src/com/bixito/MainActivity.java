@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -55,7 +56,30 @@ public class MainActivity extends SherlockFragmentActivity implements
 					.setTabListener(this));
 			actionBar.addTab(actionBar.newTab().setText(R.string.title_section2)
 					.setTabListener(this));
-		
+			
+			
+			
+			//setup FragmentTransaction used for initial creation of Fragments
+			android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+			android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+			
+			
+			/*------------- MAPS SETUP -----------//
+			//Send in the station list to the map view fragment
+			Bundle bundle = new Bundle();
+			if(stationList == null)
+				Log.w("WARNING", "Warning: Passing in a null station list to the map view fragment");
+			bundle.putParcelableArrayList("stationList", stationList);
+			Log.d("DEBUG", "Bundle size is: " + bundle.size());
+			mapViewFragment.setArguments(bundle);
+			Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
+			//-------------------------------------*/
+			
+			
+			//add both fragments to Activity
+			fragmentTransaction.add(R.id.container, mapViewFragment);
+			fragmentTransaction.add(R.id.container, listViewFragment).commit();
+
 		}
 		else{
 			Log.d("DEBUG", "This device is a tablet.");
@@ -112,28 +136,63 @@ public class MainActivity extends SherlockFragmentActivity implements
 				.replace(R.id.container, fragment).commit();*/
 		
 		//tab position 0 references the LIST tab
+		
 		if(tab.getPosition() == 0){
 			//Display list fragment
-			fragmentTransaction.replace(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
+			//fragmentTransaction.replace(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
+			
+			if (listViewFragment == null) {
+				
+				//hide map fragment and re-create list fragment
+				fragmentTransaction.hide(mapViewFragment);
+				fragmentTransaction.add(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
+				
+            } 
+			else {
+				
+				//hide map fragment and show list fragment
+            	fragmentTransaction.hide(mapViewFragment);
+    			fragmentTransaction.show(listViewFragment);
+            }
+			
+			
+			
 		}
 		//tab position 1 references the PAM tab
 		else{
-			//Send in the station list to the map view fragment
-			Bundle bundle = new Bundle();
-			if(stationList == null)
-				Log.w("WARNING", "Warning: Passing in a null station list to the map view fragment");
-			bundle.putParcelableArrayList("stationList", stationList);
-			Log.d("DEBUG", "Bundle size is: " + bundle.size());
-			mapViewFragment.setArguments(bundle);
-			Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
 			
-			//Display map fragment			
-			getSupportFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
-			//fragmentTransaction.replace(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
+			//check if mapViewFragment is intact
+			if (mapViewFragment == null){
+				
+				//------------- MAPS INITIAL SETUP -----------//
+				//Send in the station list to the map view fragment
+				Bundle bundle = new Bundle();
+				if(stationList == null)
+					Log.w("WARNING", "Warning: Passing in a null station list to the map view fragment");
+				bundle.putParcelableArrayList("stationList", stationList);
+				Log.d("DEBUG", "Bundle size is: " + bundle.size());
+				mapViewFragment.setArguments(bundle);
+				Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
+				//--------------------------------------------//
+				
+				//hide list view fragment and re-create map view fragment
+				fragmentTransaction.hide(listViewFragment);
+				fragmentTransaction.add(R.id.container, mapViewFragment, getString(R.string.map_view_fragment_tag));
+			}
+			else{
+				
+				//hide list fragment and show map fragment
+				fragmentTransaction.hide(listViewFragment);
+				fragmentTransaction.show(mapViewFragment);
+			}
+			
+			
+			//getSupportFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
+			
 			//MapFragment mapFragment = new MapFragment();
 			//fragmentTransaction.replace(R.id.container, mapFragment);
-			
 		}
+		
 	}
 
 	
@@ -189,11 +248,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 			Log.d("DEBUG", "");
 		}
 	}
-
-	
-
-	
-
 
 
 }
