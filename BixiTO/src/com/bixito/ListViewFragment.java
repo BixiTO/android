@@ -20,52 +20,51 @@ import com.bixito.station.BikeStation;
 import com.bixito.station.StationParser;
 
 public class ListViewFragment extends ListFragment {
-	
+
 	static private StationParser stationParser;
 	static private ArrayList<BikeStation> stationList;
 	ProgressDialog dialog;
 	ShareStationList shareStationList;
 
-	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//Check if the savedInstanceState is null if so, initialize it
-		if(savedInstanceState == null){
+
+		// Check if the savedInstanceState is null if so, initialize it
+		if (savedInstanceState == null) {
 			Log.d("DEBUG", "savedInstanceState was null in ListViewFrag");
 			setRetainInstance(true);
 
-			//Get the bixi data to parse
+			// Get the bixi data to parse
 			try {
-				stationParser = new StationParser(getString(R.string.bike_station_data_url));
+				stationParser = new StationParser(
+						getString(R.string.bike_station_data_url),
+						((MainActivity) getActivity()).getDeviceId());
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			Log.d("DEBUG", "list view frag was created ---");
 
 			loadStationList();
-			
+
 		}
-		
-		
+
 	}
-	
-	public boolean loadStationList(){
+
+	public boolean loadStationList() {
 		new stationListLoader().execute();
 		return true;
 	}
-	
-	private class stationListLoader extends AsyncTask<String,Void,Void>{
 
-		protected void onPreExecute(){
-			dialog = ProgressDialog.show(getActivity(), 
-					getString(R.string.loading), 
-					getString(R.string.station_data_loading_dialog), 
-					true);
+	private class stationListLoader extends AsyncTask<String, Void, Void> {
+
+		protected void onPreExecute() {
+			dialog = ProgressDialog.show(getActivity(),
+					getString(R.string.loading),
+					getString(R.string.station_data_loading_dialog), true);
 		}
-		
+
 		@Override
 		protected Void doInBackground(String... arg0) {
 			try {
@@ -79,22 +78,21 @@ public class ListViewFragment extends ListFragment {
 			}
 			return null;
 		}
-		
-		protected void onPostExecute(Void unused){
+
+		protected void onPostExecute(Void unused) {
 			dialog.dismiss();
-			ListViewAdapter adapter = new ListViewAdapter(getActivity(), stationList);
+			ListViewAdapter adapter = new ListViewAdapter(getActivity(),
+					stationList);
 			setListAdapter(adapter);
-			//Send the list over to the map fragment via the activity
+			// Send the list over to the map fragment via the activity
 			shareStationList.shareList(stationList);
-			
-			//TODO: Make use of List_view layout
+
+			// TODO: Make use of List_view layout
 
 		}
-		
-	
-		
+
 	}
-	
+
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		BikeStation selectedStation = stationList.get(position);
@@ -102,22 +100,22 @@ public class ListViewFragment extends ListFragment {
 		Intent i = new Intent(getActivity(), StationDetailActivity.class);
 		i.putExtra("com.bixito.station.BikeStation", selectedStation);
 		startActivity(i);
-		
+
 	}
-	
-	public interface ShareStationList{
+
+	public interface ShareStationList {
 		public void shareList(ArrayList<BikeStation> stationList);
 	}
-	
+
 	@Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try{
-        	shareStationList = (ShareStationList) activity;
-        }
-        catch(ClassCastException e){
-        	throw new ClassCastException(activity.toString() + " must implement ShareStationList");
-        }
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		try {
+			shareStationList = (ShareStationList) activity;
+		} catch (ClassCastException e) {
+			throw new ClassCastException(activity.toString()
+					+ " must implement ShareStationList");
+		}
 	}
-	
+
 }
