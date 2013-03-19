@@ -12,6 +12,7 @@
 	<string name="station_details_title">Station Details</string>
 	<string name="google_maps_missing">You must have Google Maps installed to use this feature.</string>
 	<string name="google_maps_install_button">Install</string>
+	<string name="refresh_button_text">Refresh</string>
 	
 	<string name="map_view_fragment_tag">map_frag</string>
 	<string name="list_view_fragment_tag">list_frag</string>
