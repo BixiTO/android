@@ -113,7 +113,6 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 		map.setLocationSource(this);
 		map.setMyLocationEnabled(true);
 		mapIsLoaded = true;
-		//map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 		
 		
 	}
@@ -235,34 +234,32 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	//These methods aren't used or required?
 	@Override
 	public void onProviderDisabled(String arg0) {
-		// TODO Auto-generated method stub
 		Log.d("DEBUG", "Maps onProviderDisabled method called.");
 	}
 
 	@Override
 	public void onProviderEnabled(String arg0) {
-		// TODO Auto-generated method stub
 		Log.d("DEBUG", "Maps onProviderEnabled method called.");
 	}
 
 	@Override
 	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
-		// TODO Auto-generated method stub
 		Log.d("DEBUG", "Maps onStatusChanged method called.");
 		
 	}
 	
 	@Override
+	//Called when ever this fragment is hidden or shown
 	public void onHiddenChanged(boolean isHidden){
 		//If map fragment was set to be hidden
 		if(isHidden){
-			//Do something
-			
+
 		}
 		else{
 			//Map view is being displayed
 			if(!mapIsLoaded)
 				init();
+				
 		}
 	}
 }

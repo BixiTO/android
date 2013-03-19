@@ -62,20 +62,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			//setup FragmentTransaction used for initial creation of Fragments
 			android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 			android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-			
-			
-			/*------------- MAPS SETUP -----------//
-			//Send in the station list to the map view fragment
-			Bundle bundle = new Bundle();
-			if(stationList == null)
-				Log.w("WARNING", "Warning: Passing in a null station list to the map view fragment");
-			bundle.putParcelableArrayList("stationList", stationList);
-			Log.d("DEBUG", "Bundle size is: " + bundle.size());
-			mapViewFragment.setArguments(bundle);
-			Log.d("DEBUG", "Size of bundle once set is: " + mapViewFragment.getArguments().size());
-			//-------------------------------------*/
-			
-			
+
 			//add both fragments to Activity
 			fragmentTransaction.add(R.id.container, mapViewFragment);
 			fragmentTransaction.add(R.id.container, listViewFragment).commit();
@@ -83,10 +70,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 		}
 		else{
 			Log.d("DEBUG", "This device is a tablet.");
-			
-			//ListViewFragment listFrag = new ListViewFragment();
-			//MapViewFragment mapFrag = new MapViewFragment();
-			//getSupportFragmentManager().beginTransaction().add(R.id.list_view_fragment, listFrag).add(R.id.map_view_fragment, mapFrag).commit();
 		}
 
 	}
@@ -114,42 +97,21 @@ public class MainActivity extends SherlockFragmentActivity implements
 		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
-	/*
-	 * @Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
-	}
-	 */
 
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction fragmentTransaction) {
 		// When the given tab is selected, show the tab contents in the
 		// container view.
-		/*Fragment fragment = new DummySectionFragment();
-		Bundle args = new Bundle();
-		args.putInt(DummySectionFragment.ARG_SECTION_NUMBER,
-				tab.getPosition() + 1);
-		fragment.setArguments(args);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.container, fragment).commit();*/
-		
 		//tab position 0 references the LIST tab
-		
 		if(tab.getPosition() == 0){
-			//Display list fragment
-			//fragmentTransaction.replace(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
-			
+			//Display list fragment			
 			if (listViewFragment == null) {
-				
 				//hide map fragment and re-create list fragment
 				fragmentTransaction.hide(mapViewFragment);
 				fragmentTransaction.add(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag));
 				
             } 
 			else {
-				
 				//hide map fragment and show list fragment
             	fragmentTransaction.hide(mapViewFragment);
     			fragmentTransaction.show(listViewFragment);
@@ -186,11 +148,6 @@ public class MainActivity extends SherlockFragmentActivity implements
 				fragmentTransaction.show(mapViewFragment);
 			}
 			
-			
-			//getSupportFragmentManager().beginTransaction().replace(R.id.container, mapViewFragment).commit();
-			
-			//MapFragment mapFragment = new MapFragment();
-			//fragmentTransaction.replace(R.id.container, mapFragment);
 		}
 		
 	}
@@ -236,13 +193,10 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public void shareList(ArrayList<BikeStation> stationList) {
 		this.stationList = stationList;
 		Log.d("DEBUG", "Got back: " + stationList.size() + " stations from ListViewFragment.");
-		//MapViewFragment mapViewFragment = (MapViewFragment) getFragmentManager().findFragmentByTag(getString(R.string.map_view_fragment_tag));
 		
 		if(mapViewFragment != null){
 			//Call a method to pass in the station list
-			//MapViewFragment mapViewFragment = (MapViewFragment) getSupportFragmentManager().findFragmentById(R.id.map_view_fragment);
 			mapViewFragment.updateStationList(stationList);
-			//(MapViewFragment) findViewById(R.id.map_view_fragment).updateStationList(stationList);
 		}
 		else{
 			Log.d("DEBUG", "Could not find the map view fragment when updating the station list.");

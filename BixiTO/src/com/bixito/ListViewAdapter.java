@@ -44,8 +44,8 @@ public class ListViewAdapter extends BaseAdapter {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.list_item, null);
 		}
-		
-		//Temporary to display some dummy data
+
+		//Display data
 		TextView text1 = (TextView) convertView.findViewById(R.id.text1);
 		text1.setText(station.getStationName());
 		
