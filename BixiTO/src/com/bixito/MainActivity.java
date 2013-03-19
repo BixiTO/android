@@ -12,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.bixito.station.BikeStation;
 
 public class MainActivity extends SherlockFragmentActivity implements
@@ -203,5 +203,17 @@ public class MainActivity extends SherlockFragmentActivity implements
 		}
 	}
 
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case R.id.refresh:
+			//Refresh the list/map
+			if(listViewFragment != null)
+				listViewFragment.loadStationList();
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
 }

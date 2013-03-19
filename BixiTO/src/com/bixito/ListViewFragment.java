@@ -52,7 +52,7 @@ public class ListViewFragment extends ListFragment {
 		
 	}
 	
-	private boolean loadStationList(){
+	public boolean loadStationList(){
 		new stationListLoader().execute();
 		return true;
 	}
