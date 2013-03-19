@@ -251,4 +251,18 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 		Log.d("DEBUG", "Maps onStatusChanged method called.");
 		
 	}
+	
+	@Override
+	public void onHiddenChanged(boolean isHidden){
+		//If map fragment was set to be hidden
+		if(isHidden){
+			//Do something
+			
+		}
+		else{
+			//Map view is being displayed
+			if(!mapIsLoaded)
+				init();
+		}
+	}
 }

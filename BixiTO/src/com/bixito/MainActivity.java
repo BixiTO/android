@@ -238,14 +238,14 @@ public class MainActivity extends SherlockFragmentActivity implements
 		Log.d("DEBUG", "Got back: " + stationList.size() + " stations from ListViewFragment.");
 		//MapViewFragment mapViewFragment = (MapViewFragment) getFragmentManager().findFragmentByTag(getString(R.string.map_view_fragment_tag));
 		
-		if(getSupportFragmentManager().findFragmentById(R.id.map_view_fragment) != null){
+		if(mapViewFragment != null){
 			//Call a method to pass in the station list
-			MapViewFragment mapViewFragment = (MapViewFragment) getSupportFragmentManager().findFragmentById(R.id.map_view_fragment);
+			//MapViewFragment mapViewFragment = (MapViewFragment) getSupportFragmentManager().findFragmentById(R.id.map_view_fragment);
 			mapViewFragment.updateStationList(stationList);
 			//(MapViewFragment) findViewById(R.id.map_view_fragment).updateStationList(stationList);
 		}
 		else{
-			Log.d("DEBUG", "");
+			Log.d("DEBUG", "Could not find the map view fragment when updating the station list.");
 		}
 	}
 
