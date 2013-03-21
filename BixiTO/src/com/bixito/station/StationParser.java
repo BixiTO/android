@@ -38,8 +38,8 @@ public class StationParser {
 	static final String NUMBER_OF_EMPTY_DOCKS = "nbEmptyDocks";
 	static final String STATION_LAST_UPDATE_TIME = "latestUpdateTime";
 	
-	public StationParser(String sourceDocument) throws MalformedURLException{
-		this.sourceDocumentURL = new URL(sourceDocument);
+	public StationParser(String sourceDocument, String deviceId) throws MalformedURLException{
+		this.sourceDocumentURL = new URL(sourceDocument+"?deviceId="+deviceId);
 	}
 	
 	/**
