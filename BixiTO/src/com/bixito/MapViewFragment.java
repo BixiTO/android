@@ -27,11 +27,12 @@ import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapViewFragment extends SupportMapFragment implements LocationListener, LocationSource {
 	ArrayList<BikeStation> stationList = null;
-	ArrayList<MarkerOptions> markerList = null;
+	ArrayList<Marker> markerList = null;
 	static final Float initialZoomLevel = 10F;
 	static final double initialLongitude = -79.40;
 	static final double initialLatitude = 43.65;
@@ -154,7 +155,7 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	private void placeMarkers(){
 		Log.d("DEBUG", "Station list size: " + stationList.size());
 		
-		markerList = new ArrayList<MarkerOptions>();
+		markerList = new ArrayList<Marker>();
 		MarkerOptions currentMarker;
 		BikeStation currentStation = null;
 		for(int i = 0; i < stationList.size(); i++){
@@ -164,8 +165,8 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 			currentMarker.position(new LatLng(currentStation.getLatitude(), currentStation.getLongitude()));
 			currentMarker.title(currentStation.getStationName());
 			currentMarker.snippet("Bikes: " + currentStation.getNbBikes() + " Empty: " + currentStation.getNbEmptyDocks());
-			markerList.add(currentMarker);
-			getMap().addMarker(currentMarker);
+			markerList.add(getMap().addMarker(currentMarker));
+			
 		}
 		
 	}
