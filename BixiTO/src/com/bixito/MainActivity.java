@@ -153,9 +153,28 @@ public class MainActivity extends SherlockFragmentActivity implements
 				fragmentTransaction.hide(listViewFragment);
 				fragmentTransaction.show(mapViewFragment);
 			}
-
 		}
 
+	}
+	
+	/* ----------- method for swapping between the LIST and MAP fragments ----------- */
+	//-> still in testing phase, use at your own discretion
+	public void swapBetweenListAndMapFragments(){
+		//setup FragmentTransaction for hide/show of fragments
+		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		
+		if (listViewFragment.isHidden()){
+			//hide map view, show list view
+			fragmentTransaction.hide(mapViewFragment);
+			fragmentTransaction.show(listViewFragment).commit();
+		}
+		else if (mapViewFragment.isHidden()){
+			//hide list view, show map view
+			fragmentTransaction.hide(listViewFragment);
+			fragmentTransaction.show(mapViewFragment).commit();
+		}
 	}
 
 	public void onTabUnselected(ActionBar.Tab tab,
@@ -195,7 +214,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public void shareList(ArrayList<BikeStation> stationList) {
+		//save passed station list
 		this.stationList = stationList;
+		
 		Log.d("DEBUG", "Got back: " + stationList.size()
 				+ " stations from ListViewFragment.");
 
@@ -207,6 +228,30 @@ public class MainActivity extends SherlockFragmentActivity implements
 					"Could not find the map view fragment when updating the station list.");
 		}
 	}
+	
+	@Override
+	public void shareSelectedStation(BikeStation selectedStation){
+		//send selectedStation to MapViewFragment as the center coordinate
+		//show MapViewFragment
+		//hide ListViewFragment
+		
+		getSupportActionBar().setSelectedNavigationItem(1);
+		
+		//setup FragmentTransaction
+		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		
+		//hide list view, show map view
+		fragmentTransaction.hide(listViewFragment);
+		fragmentTransaction.show(mapViewFragment).commit();
+		
+		//animate the position of the map fragment to the desired station's location
+		mapViewFragment.animateMapLocation(selectedStation);
+		
+		//create method for handling hide/show of each of the fragments 
+	}
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

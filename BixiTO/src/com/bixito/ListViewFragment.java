@@ -84,6 +84,7 @@ public class ListViewFragment extends ListFragment {
 			ListViewAdapter adapter = new ListViewAdapter(getActivity(),
 					stationList);
 			setListAdapter(adapter);
+			
 			// Send the list over to the map fragment via the activity
 			shareStationList.shareList(stationList);
 
@@ -96,15 +97,21 @@ public class ListViewFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		BikeStation selectedStation = stationList.get(position);
-
-		Intent i = new Intent(getActivity(), StationDetailActivity.class);
-		i.putExtra("com.bixito.station.BikeStation", selectedStation);
-		startActivity(i);
+		
+		//share the selected bike station via the activity
+		shareStationList.shareSelectedStation(selectedStation);
+		
+		
+		//Intent i = new Intent(getActivity(), StationDetailActivity.class);
+		//i.putExtra("com.bixito.station.BikeStation", selectedStation);
+		//startActivity(i);
 
 	}
 
 	public interface ShareStationList {
 		public void shareList(ArrayList<BikeStation> stationList);
+		
+		public void shareSelectedStation(BikeStation selectedStation);
 	}
 
 	@Override

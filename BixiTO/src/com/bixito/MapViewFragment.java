@@ -30,10 +30,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+
 public class MapViewFragment extends SupportMapFragment implements LocationListener, LocationSource {
 	ArrayList<BikeStation> stationList = null;
 	ArrayList<Marker> markerList = null;
-	static final Float initialZoomLevel = 10F;
+	static final Float initialZoomLevel = 18F;
 	static final double initialLongitude = -79.40;
 	static final double initialLatitude = 43.65;
 	static LatLng initialCameraLocation = new LatLng(initialLatitude, initialLongitude);
@@ -43,11 +44,14 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	static final Float updateDist = 10F; //10 Meters
 	static final Float defaultZoomLevel = 17F; //Ranges from 2 (Furthest) - 21 (Closest)
 	private boolean mapIsLoaded = false;
-
+	
+	private Marker currentSelectedMarker;
+	
 	GoogleMap map;
 	
 	private OnLocationChangedListener locationListener;
 	private LocationManager locationManager;
+	
 	
 	@Override
 	public View onCreateView(LayoutInflater arg0, ViewGroup arg1, Bundle savedInstanceState) {
@@ -87,11 +91,62 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 		super.onPause();
 	}
 	
+	
 	@Override
 	public void onResume(){
 		super.onResume();
 		if(locationManager != null){
 			map.setMyLocationEnabled(true);
+		}
+	}
+	
+	
+	/* -- onMarkerClickListener will need to be implemented at some point --
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		getMap().setOnMarkerClickListener(new OnInfoWindowClickListener() {
+	        public void onInfoWindowClick(Marker marker) {
+	            Intent i = new Intent(getActivity(), NewActivity.class);
+	            startActivity(i);
+	        }
+	    });
+	}
+	*/
+	
+	public void animateMapLocation(BikeStation selectedStation){
+		
+		//zoom level of resulting view
+		Float zoomLevel = 16F;
+		//speed of the animation in ms
+		int animationDuration = 800; 
+		//marker which holds the appropriate selectedStation location
+		currentSelectedMarker = null;
+		
+		//search markerList to locate the desired selected marker
+		for (int i = 0; i < markerList.size(); i++){
+			if ( markerList.get(i).getTitle().equals(selectedStation.getStationName()) ){
+				//save the found marker
+				currentSelectedMarker = markerList.get(i);
+				Log.d("DEBUG", "Selected station's marker found: " + markerList.get(i).getTitle());
+				
+				//show the marker's info window
+				currentSelectedMarker.showInfoWindow();
+				//break out of the loop
+				break;
+			}
+		}
+
+		//check if marker was found
+		if (currentSelectedMarker == null)
+			Log.d("DEBUG", "Marker not found for selected station... we are in the DANGER ZONE");
+		else{
+			//animate the camera's location to the selected station
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentSelectedMarker.getPosition(), zoomLevel), animationDuration, new CancelableCallback() {
+		        @Override
+		        public void onFinish() {}
+		        @Override
+		        public void onCancel() {}
+		    });
 		}
 	}
 	
@@ -169,6 +224,11 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 			
 		}
 		
+		
+		//check if there is a currently selected marker
+		//NOTE: currentSelectedMarker will need to be updated via onClickMarkerListener
+		if (currentSelectedMarker != null)
+			currentSelectedMarker.showInfoWindow();
 	}
 	
 	public void updateMarkers(){
@@ -196,6 +256,7 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 			return false;
 		}
 	}
+	
 	
 	public OnClickListener installGoogleMapsListener(){
 		return new OnClickListener(){
