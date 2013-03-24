@@ -1,6 +1,7 @@
 package com.bixito;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,9 +17,22 @@ public class ListViewAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<BikeStation> bikeStations;
 	
-	public ListViewAdapter(Context context, ArrayList<BikeStation> bikeStations){
+	public ListViewAdapter(Context context, ArrayList<BikeStation> bStations){
+		//save the current activity context		
 		this.context = context;
-		this.bikeStations = bikeStations;
+		
+		//sort the BikeStation's by name
+		java.util.Collections.sort(bStations, new MyComparator());
+		
+		this.bikeStations = bStations;
+	}
+	
+	//custom comparator used to sort BikeStation's by name
+	private class MyComparator implements Comparator<BikeStation> {
+	    @Override
+	    public int compare(BikeStation o1, BikeStation o2) {
+	        return o1.getStationName().compareTo(o2.getStationName());
+	    }
 	}
 	
 	/**
