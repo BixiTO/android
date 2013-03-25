@@ -236,22 +236,23 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public void shareSelectedStation(BikeStation selectedStation){
 
 		//check if device is a phone, if it is - change the selected tab to "Maps"
-		if (!deviceIsTablet)
+		if (!deviceIsTablet){
 			getSupportActionBar().setSelectedNavigationItem(1);
-		
-		//setup FragmentTransaction
-		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-		android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		
-		//hide list view, show map view
-		fragmentTransaction.hide(listViewFragment);
-		fragmentTransaction.show(mapViewFragment).commit();
+			
+			//setup FragmentTransaction
+			android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+			android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager
+					.beginTransaction();
+			
+			//hide list view, show map view
+			fragmentTransaction.hide(listViewFragment);
+			fragmentTransaction.show(mapViewFragment).commit();
+		}
+
 		
 		//animate the position of the map fragment to the desired station's location
 		mapViewFragment.animateMapLocation(selectedStation);
-		
-		//check station by ID !!!!!
+
 	}
 	
 
