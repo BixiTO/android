@@ -124,5 +124,14 @@ public class ListViewFragment extends ListFragment {
 					+ " must implement ShareStationList");
 		}
 	}
+	
+	public void onHiddenChanged(boolean isHidden){
+		if(!isHidden){
+			//If this fragment is no longer hidden,
+			//tell the action bar in the activity to update
+			
+		}
+	
+	}
 
 }

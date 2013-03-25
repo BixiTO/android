@@ -72,7 +72,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 			// add both fragments to Activity
 			fragmentTransaction.add(R.id.container, mapViewFragment);
-			fragmentTransaction.add(R.id.container, listViewFragment).commit();
+			fragmentTransaction.add(R.id.container, listViewFragment, getString(R.string.list_view_fragment_tag)).commit();
 
 		} else {
 			deviceIsTablet = true;
@@ -247,6 +247,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			
 			//hide list view, show map view
 			fragmentTransaction.hide(listViewFragment);
+			fragmentTransaction.addToBackStack(getString(R.string.list_view_fragment_tag));
 			fragmentTransaction.show(mapViewFragment).commit();
 
 		}
