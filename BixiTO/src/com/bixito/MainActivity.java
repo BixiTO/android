@@ -27,6 +27,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	private ListViewFragment listViewFragment;
 	private MapViewFragment mapViewFragment;
 	private String deviceId = null;
+	private boolean deviceIsTablet;
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -42,6 +43,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		if (findViewById(R.id.container) != null) {
 			// We're in phone mode
+			deviceIsTablet = false;
 			Log.d("DEBUG", "This device is a phone.");
 
 			// crate ListView and MapView fragments
@@ -73,6 +75,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			fragmentTransaction.add(R.id.container, listViewFragment).commit();
 
 		} else {
+			deviceIsTablet = true;
 			Log.d("DEBUG", "This device is a tablet.");
 		}
 
@@ -231,11 +234,10 @@ public class MainActivity extends SherlockFragmentActivity implements
 	
 	@Override
 	public void shareSelectedStation(BikeStation selectedStation){
-		//send selectedStation to MapViewFragment as the center coordinate
-		//show MapViewFragment
-		//hide ListViewFragment
-		
-		getSupportActionBar().setSelectedNavigationItem(1);
+
+		//check if device is a phone, if it is - change the selected tab to "Maps"
+		if (!deviceIsTablet)
+			getSupportActionBar().setSelectedNavigationItem(1);
 		
 		//setup FragmentTransaction
 		android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -249,7 +251,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		//animate the position of the map fragment to the desired station's location
 		mapViewFragment.animateMapLocation(selectedStation);
 		
-		//create method for handling hide/show of each of the fragments 
+		//check station by ID !!!!!
 	}
 	
 
