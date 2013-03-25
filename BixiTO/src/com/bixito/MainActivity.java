@@ -77,6 +77,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 		} else {
 			deviceIsTablet = true;
 			Log.d("DEBUG", "This device is a tablet.");
+			mapViewFragment = (MapViewFragment) getSupportFragmentManager().findFragmentById(R.id.map_view_fragment);
 		}
 
 	}
@@ -247,11 +248,15 @@ public class MainActivity extends SherlockFragmentActivity implements
 			//hide list view, show map view
 			fragmentTransaction.hide(listViewFragment);
 			fragmentTransaction.show(mapViewFragment).commit();
-		}
 
+		}
 		
 		//animate the position of the map fragment to the desired station's location
-		mapViewFragment.animateMapLocation(selectedStation);
+		if(mapViewFragment == null)
+			Log.w("WARNING", "MapViewFragment is null");
+		else
+			mapViewFragment.animateMapLocation(selectedStation);
+
 
 	}
 	
