@@ -126,7 +126,10 @@ public class MainActivity extends SherlockFragmentActivity implements
 				fragmentTransaction.hide(mapViewFragment);
 				fragmentTransaction.show(listViewFragment);
 			}
-
+			
+			//pop all existing instances of listViewFragment existing in the back stack 
+			android.support.v4.app.FragmentManager fManager = getSupportFragmentManager();
+			fManager.popBackStack(null, android.support.v4.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
 		}
 		// tab position 1 references the PAM tab
 		else {
@@ -238,7 +241,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		//check if device is a phone, if it is - change the selected tab to "Maps"
 		if (!deviceIsTablet){
-			getSupportActionBar().setSelectedNavigationItem(1);
+			//getSupportActionBar().setSelectedNavigationItem(1);
 			
 			//setup FragmentTransaction
 			android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -257,8 +260,16 @@ public class MainActivity extends SherlockFragmentActivity implements
 			Log.w("WARNING", "MapViewFragment is null");
 		else
 			mapViewFragment.animateMapLocation(selectedStation);
-
-
+	}
+	
+	@Override
+	public void selectMapTab(){
+		getSupportActionBar().setSelectedNavigationItem(1);
+	}
+	
+	@Override
+	public void selectListTab(){
+		getSupportActionBar().setSelectedNavigationItem(0);
 	}
 	
 

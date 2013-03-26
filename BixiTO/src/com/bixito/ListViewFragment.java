@@ -112,6 +112,10 @@ public class ListViewFragment extends ListFragment {
 		public void shareList(ArrayList<BikeStation> stationList);
 		
 		public void shareSelectedStation(BikeStation selectedStation);
+		
+		public void selectMapTab();
+		
+		public void selectListTab();
 	}
 
 	@Override
@@ -126,12 +130,14 @@ public class ListViewFragment extends ListFragment {
 	}
 	
 	public void onHiddenChanged(boolean isHidden){
-		if(!isHidden){
-			//If this fragment is no longer hidden,
-			//tell the action bar in the activity to update
-			
+		if(isHidden){
+			//If this fragment has just been hidden, select the Map tab
+			shareStationList.selectMapTab();
+		}else{
+			//If this fragment has just been shown, select the List tab
+			shareStationList.selectListTab();
 		}
-	
+		
 	}
 
 }
