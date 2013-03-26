@@ -78,6 +78,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			deviceIsTablet = true;
 			Log.d("DEBUG", "This device is a tablet.");
 			mapViewFragment = (MapViewFragment) getSupportFragmentManager().findFragmentById(R.id.map_view_fragment);
+			listViewFragment = (ListViewFragment) getSupportFragmentManager().findFragmentById(R.id.list_view_fragment);
 		}
 
 	}
