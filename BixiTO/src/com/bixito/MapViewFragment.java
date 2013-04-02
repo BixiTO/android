@@ -23,6 +23,7 @@ import com.bixito.station.BikeStation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.CancelableCallback;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
@@ -153,8 +154,35 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	private void initMap(){
 		UiSettings mapsSettings = getMap().getUiSettings();
 		
-		placeMarkers();
 		map = getMap();
+		
+		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){
+
+			@Override
+			public void onInfoWindowClick(Marker marker) {
+				Intent intent = new Intent(getActivity(), StationDetailActivity.class);
+				String selectedStationTitle = marker.getTitle();
+				int selectedStation = -1;
+				if(stationList != null){
+					for(int i = 0 ; i < stationList.size(); i++){
+						if(stationList.get(i).getStationName().equals(selectedStationTitle)){
+							selectedStation = i;
+							break;
+						}
+					}
+					if(selectedStation != -1){
+						intent.putExtra("com.bixito.station.BikeStation", stationList.get(selectedStation));
+						startActivity(intent);
+					}
+					else{
+						Log.w("WARNING", "Could not find station with name: " + selectedStationTitle);
+					}
+				}
+			}
+			
+		});
+		
+		placeMarkers();
 		if(!mapIsLoaded){
 			//Map is loading for the first time, so move the camera to Toronto until we get the GPS location	
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(initialCameraLocation, initialZoomLevel), initialAnimateTime, new CancelableCallback() {
@@ -168,6 +196,7 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 		}
 		map.setLocationSource(this);
 		map.setMyLocationEnabled(true);
+		
 		mapIsLoaded = true;
 		
 		
