@@ -18,7 +18,6 @@ public class BikeStation implements Parcelable {
 	int nbBikes;
 	int nbEmptyDocks;
 	long latestUpdateTime;
-	int slashIndex;
 	
 	/**
 	 * 
