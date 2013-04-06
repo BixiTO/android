@@ -24,7 +24,7 @@
         <item name="android:dividerHeight">1px</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:background">#101010</item>
+        <item name="android:background">@drawable/background_main_color</item>
 
         
 	</style>
