@@ -18,6 +18,7 @@ public class BikeStation implements Parcelable {
 	int nbBikes;
 	int nbEmptyDocks;
 	long latestUpdateTime;
+	int slashIndex;
 	
 	/**
 	 * 
@@ -91,7 +92,21 @@ public class BikeStation implements Parcelable {
 	 * @param stationName the stationName to set
 	 */
 	public void setStationName(String stationName) {
-		this.stationName = stationName;
+		
+		//If the station name contains a slash
+		//Replace it with "and" and make sure spaces are proper
+		if(stationName.contains("/")){
+			String[] temp = stationName.split("/");
+			String outputStationName = "";
+			for(int i = 0; i < temp.length; i++){
+				outputStationName += temp[i].trim();
+				if(i != (temp.length - 1))
+					outputStationName += " and ";
+			}
+			this.stationName = outputStationName;
+		}
+		else
+			this.stationName = stationName;
 	}
 
 	/**
