@@ -14,6 +14,12 @@
 	<string name="google_maps_install_button">Install</string>
 	<string name="refresh_button_text">Refresh</string>
 	
+	<string name="error_loading_list_error">An error has occurred while loading the station list.</string>
+	<string name="error_loading_list_okay_button">OK</string>
+	
+	<string name="error_no_network_connection_error">An active internet connection was not found. Please check your internet connection and try again.</string>
+	<string name="error_no_network_connection_okay_button">OK</string>
+	
 	<string name="station_pop_json_url">http://bixito.andrewl.ca/stations/STATION_ID.json</string>
 	<string name="station_pop_label">Station Popularity:</string>
 	<string name="station_pop_loading">Loading...</string>

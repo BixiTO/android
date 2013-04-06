@@ -2,6 +2,12 @@ package com.bixito;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
@@ -38,8 +44,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_main);
+		
+		setContentView(R.layout.activity_main);	
 
 		if (findViewById(R.id.container) != null) {
 			// We're in phone mode
@@ -289,5 +295,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public String getDeviceId(){
 		return deviceId;
 	}
+	
+
 
 }

@@ -7,8 +7,13 @@ import java.util.ArrayList;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -24,6 +29,7 @@ public class ListViewFragment extends ListFragment {
 	static private StationParser stationParser;
 	static private ArrayList<BikeStation> stationList;
 	ProgressDialog dialog;
+
 	ShareStationList shareStationList;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,13 +59,34 @@ public class ListViewFragment extends ListFragment {
 	}
 
 	public boolean loadStationList() {
-		new stationListLoader().execute();
-		return true;
+		//Check to make sure internet connection is available
+		if(!isNetworkAvailable(getActivity())){
+			Log.d("DEBUG", "no network connection found.");
+			Builder b = new AlertDialog.Builder(getActivity());
+			b.setMessage(getString(R.string.error_no_network_connection_error));
+			b.setCancelable(false);
+			b.setPositiveButton(getString(R.string.error_no_network_connection_okay_button), 
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							getActivity().finish();
+						}
+					});
+			AlertDialog dialog = b.create();
+			dialog.show();
+			return false;
+		}
+		else{
+			new stationListLoader().execute();
+			return true;
+		}
 	}
 
 	private class stationListLoader extends AsyncTask<String, Void, Void> {
 
 		protected void onPreExecute() {
+
+			
+			
 			dialog = ProgressDialog.show(getActivity(),
 					getString(R.string.loading),
 					getString(R.string.station_data_loading_dialog), true);
@@ -67,28 +94,45 @@ public class ListViewFragment extends ListFragment {
 
 		@Override
 		protected Void doInBackground(String... arg0) {
+			
 			try {
 				stationList = stationParser.getStationList();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("ERROR", e.getMessage());
 			} catch (SAXException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				Log.e("ERROR", e.getMessage());
+			} 
 			return null;
 		}
 
 		protected void onPostExecute(Void unused) {
 			dialog.dismiss();
-			ListViewAdapter adapter = new ListViewAdapter(getActivity(),
-					stationList);
-			setListAdapter(adapter);
-			
-			// Send the list over to the map fragment via the activity
-			shareStationList.shareList(stationList);
+			try{
+				ListViewAdapter adapter = new ListViewAdapter(getActivity(), stationList);
+				setListAdapter(adapter);
+				
+				// Send the list over to the map fragment via the activity
+				shareStationList.shareList(stationList);
 
-			// TODO: Make use of List_view layout
+			} catch (NullPointerException e){
+				Log.e("ERROR", "exception", e);
+
+				Builder b = new AlertDialog.Builder(getActivity());
+				b.setMessage(getString(R.string.error_loading_list_error));
+				b.setCancelable(false);
+				b.setPositiveButton(getString(R.string.error_loading_list_okay_button), 
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								getActivity().finish();
+							}
+						});
+				AlertDialog dialog = b.create();
+				dialog.show();
+			}
+			
+
 
 		}
 
@@ -138,6 +182,16 @@ public class ListViewFragment extends ListFragment {
 			shareStationList.selectListTab();
 		}
 		
+	}
+	
+	public boolean isNetworkAvailable(Context context) {
+
+	    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    if (cm.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED || cm.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED) {
+	        return true;
+	    }
+	    else
+	    	return false;
 	}
 
 }
