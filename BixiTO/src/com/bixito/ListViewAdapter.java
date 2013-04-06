@@ -64,7 +64,8 @@ public class ListViewAdapter extends BaseAdapter {
 		text1.setText(station.getStationName());
 		
 		TextView text2 = (TextView) convertView.findViewById(R.id.text2);
-		text2.setText(station.getTerminalName());
+		text2.setText("Bikes: " + Integer.toString(station.getNbBikes()) + 
+				" Empty: " + Integer.toString(station.getNbEmptyDocks()) );
 		
 		
 		return convertView;

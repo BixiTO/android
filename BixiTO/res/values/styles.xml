@@ -15,6 +15,18 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+            <item name="android:listViewStyle">@style/MyListViewStyle</item>
     </style>
+
+    
+    <style name="MyListViewStyle" parent="@android:style/Widget.ListView">
+        <item name="android:divider">#555</item>
+        <item name="android:dividerHeight">1px</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:background">#101010</item>
+        <!-- <item name="android:background">@drawable/list_item_color</item> -->
+        
+	</style>
 
 </resources>
