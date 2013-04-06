@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -8,7 +8,22 @@
         android:id="@+id/textView1"
         android:layout_width="239dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.04"
         android:text="TextView" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/stationPopLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:text="@string/station_pop_label" />
+
+    <TextView
+        android:id="@+id/stationPopTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_toRightOf="@+id/stationPopLabel"
+        android:text="@string/station_pop_loading" />
+
+</RelativeLayout>

@@ -14,6 +14,13 @@
 	<string name="google_maps_install_button">Install</string>
 	<string name="refresh_button_text">Refresh</string>
 	
+	<string name="station_pop_json_url">http://bixito.andrewl.ca/stations/STATION_ID.json</string>
+	<string name="station_pop_label">Station Popularity:</string>
+	<string name="station_pop_loading">Loading...</string>
+	<string name="station_pop_error">Error loading station popularity</string>
+	<string name="station_pop_low">Low</string>
+	
+	
 	<string name="map_view_fragment_tag">map_frag</string>
 	<string name="list_view_fragment_tag">list_frag</string>
     
