@@ -187,11 +187,15 @@ public class ListViewFragment extends ListFragment {
 	public boolean isNetworkAvailable(Context context) {
 
 	    ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-	    if (cm.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED || cm.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED) {
-	        return true;
-	    }
+	    
+	   
+	    if(cm.getActiveNetworkInfo() == null)
+	    	return false;
+	    if(cm.getActiveNetworkInfo().getState() == NetworkInfo.State.CONNECTED)
+	    	return true;
 	    else
 	    	return false;
+	    
 	}
 
 }
