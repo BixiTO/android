@@ -20,8 +20,21 @@
 	<string name="error_no_network_connection_error">An active internet connection was not found. Please check your internet connection and try again.</string>
 	<string name="error_no_network_connection_okay_button">OK</string>
 	
+	<!-- Station Details Activity Strings -->
+	<string name="station_is_public_label">Public station:</string>
+	<string name="station_is_locked_label">Station locked:</string>
+	<string name="station_is_temp_label">Station is temporary:</string>
+	<string name="station_last_update_label">Station status last updated:</string>
+	
+	<string name="station_is_public_true">Yes</string>
+	<string name="station_is_public_false">No</string>
+	<string name="station_is_locked_true">Yes</string>
+	<string name="station_is_locked_false">No</string>
+	<string name="station_is_temp_true">Yes</string>
+	<string name="station_is_temp_false">No</string>
+	
 	<string name="station_pop_json_url">http://bixito.andrewl.ca/stations/STATION_ID.json</string>
-	<string name="station_pop_label">Station Popularity:</string>
+	<string name="station_pop_label">Station popularity:</string>
 	<string name="station_pop_loading">Loading...</string>
 	<string name="station_pop_error">Error loading station popularity</string>
 	<string name="station_pop_low">Low</string>

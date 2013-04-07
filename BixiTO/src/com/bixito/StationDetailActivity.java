@@ -1,6 +1,7 @@
 package com.bixito;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -24,6 +25,11 @@ public class StationDetailActivity extends Activity {
 
 	BikeStation bikeStation = null;
 	TextView stationPopTextView = null;
+	TextView stationNameTextView = null;
+	TextView stationLastUpdatedTextView = null;
+	TextView stationIsPublicTextView = null;
+	TextView stationIsLockedTextView = null;
+	TextView stationIsTempTextView = null;
 	int stationRank = -1;
 	int stationRankChange = 0;
 	
@@ -35,8 +41,36 @@ public class StationDetailActivity extends Activity {
 		Log.d("DEBUG", "Got: " + getIntent().getExtras().size() + " number of Parcels.");
 		bikeStation = (BikeStation) getIntent().getExtras().getParcelable("com.bixito.station.BikeStation");
 		
-		TextView textView1 = (TextView) findViewById(R.id.textView1);
-		textView1.setText("Station Name = " + bikeStation.getStationName());
+		stationNameTextView = (TextView) findViewById(R.id.stationNameTextView);
+		stationNameTextView.setText(bikeStation.getStationName());
+		
+		stationIsPublicTextView = (TextView) findViewById(R.id.stationIsPublicTextView);
+		String publicStation;
+		if(bikeStation.isPublicStation())
+			publicStation = getString(R.string.station_is_public_true);
+		else
+			publicStation = getString(R.string.station_is_public_false);
+		stationIsPublicTextView.setText(publicStation);
+		
+		stationIsLockedTextView = (TextView) findViewById(R.id.stationIsLockedTextView);
+		String lockedStation;
+		if(bikeStation.isLocked())
+			lockedStation = getString(R.string.station_is_locked_true);
+		else
+			lockedStation = getString(R.string.station_is_locked_false);
+		stationIsLockedTextView.setText(" " + lockedStation);
+		
+		stationIsTempTextView = (TextView) findViewById(R.id.stationIsTempTextView);
+		String tempStation;
+		if(bikeStation.isTemporary())
+			tempStation = getString(R.string.station_is_temp_true);
+		else
+			tempStation = getString(R.string.station_is_temp_false);
+		stationIsTempTextView.setText(" " + tempStation);
+		
+		stationLastUpdatedTextView = (TextView) findViewById(R.id.stationLastUpdatedTextView);
+		Date time=new java.util.Date((long) bikeStation.getLatestUpdateTime());
+		stationLastUpdatedTextView.setText(getString(R.string.station_last_update_label) + " " + time.toString());
 		
 		stationPopTextView = (TextView) findViewById(R.id.stationPopTextView);
 		
@@ -89,7 +123,7 @@ public class StationDetailActivity extends Activity {
 				if(stationRank > 25)
 					stationPopTextView.setText(getString(R.string.station_pop_low));
 				else
-					stationPopTextView.setText(stationRank + " (" + stationRankChange + ")");
+					stationPopTextView.setText(" " + stationRank + " (" + stationRankChange + ")");
 				
 				
 			}

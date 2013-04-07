@@ -5,25 +5,84 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="239dp"
+        android:id="@+id/stationIsPublicLabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/stationPopLabel"
+        android:text="@string/station_is_public_label" />
+
+    <TextView
+        android:id="@+id/stationNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="StationName"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/stationPopLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/stationNameTextView"
         android:text="@string/station_pop_label" />
+
+    <TextView
+        android:id="@+id/stationLastUpdatedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="stationLastUpdatedTextView" />
+
+    <TextView
+        android:id="@+id/stationIsLockedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/stationIsPublicLabel"
+        android:text="@string/station_is_locked_label" />
+
+    <TextView
+        android:id="@+id/stationIsTempLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/stationIsLockedLabel"
+        android:text="@string/station_is_temp_label" />
 
     <TextView
         android:id="@+id/stationPopTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/stationNameTextView"
         android:layout_toRightOf="@+id/stationPopLabel"
         android:text="@string/station_pop_loading" />
+
+    <TextView
+        android:id="@+id/stationIsPublicTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stationPopTextView"
+        android:layout_toRightOf="@+id/stationIsLockedLabel"
+        android:text="stationIsPublicTextView" />
+
+    <TextView
+        android:id="@+id/stationIsTempTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stationIsLockedTextView"
+        android:layout_toRightOf="@+id/stationIsTempLabel"
+        android:text="stationIsTempTextView" />
+
+    <TextView
+        android:id="@+id/stationIsLockedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stationIsPublicLabel"
+        android:layout_toRightOf="@+id/stationIsLockedLabel"
+        android:text="stationIsLockedTextView" />
 
 </RelativeLayout>
