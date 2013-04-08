@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp"
         android:text="StationName"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -84,6 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/stationIsTempTextView"
         android:layout_centerHorizontal="true"
+        android:paddingTop="10dp"
         android:text="stationLastUpdatedTextView" />
 
     <View
