@@ -12,7 +12,13 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/stationPopLabel"
         android:text="@string/station_is_public_label" />
-
+	<TextView
+        android:id="@+id/loadingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stationNameTextView"
+        android:layout_toRightOf="@+id/stationPopLabel"
+        android:text="@string/station_pop_loading" />
     <TextView
         android:id="@+id/stationNameTextView"
         android:layout_width="wrap_content"
@@ -53,7 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/stationNameTextView"
         android:layout_toRightOf="@+id/stationPopLabel"
-        android:text="@string/station_pop_loading" />
+        android:visibility="invisible"
+        android:text="" />
 
     <TextView
         android:id="@+id/stationIsPublicTextView"
@@ -125,5 +132,19 @@
             android:layout_weight="1"
             android:text="@string/get_directions_button_text" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/rankImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/stationPopTextView"
+        android:layout_alignTop="@+id/stationPopTextView"
+        android:layout_marginRight="0dp"
+        android:layout_toRightOf="@+id/stationPopTextView"
+        android:src="@drawable/up" />
+
+        <!-- android:layout_toRightOf="@+id/stationPopTextView" -->
+        
+        
 
 </RelativeLayout>

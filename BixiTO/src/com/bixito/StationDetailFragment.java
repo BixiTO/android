@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bixito.station.BikeStation;
@@ -39,8 +40,10 @@ public class StationDetailFragment extends DialogFragment {
 	TextView stationIsTempTextView = null;
 	Button getDirectionsButton = null;
 	Button dismissDialogButton = null;
+	ImageView rankImage = null;
 	int stationRank = -1;
 	int stationRankChange = 0;
+	TextView loadingLabel = null;
 	
 	static StationDetailFragment newInstance(BikeStation station){
 		StationDetailFragment f = new StationDetailFragment();
@@ -103,12 +106,18 @@ public class StationDetailFragment extends DialogFragment {
 				stationRank = jsonObject.getInt("rank");
 				stationRankChange = jsonObject.getInt("upordown");
 				
-				if(stationRank > 25)
+				if(stationRank > 125)
 					stationPopTextView.setText(getString(R.string.station_pop_low));
-				else
-					stationPopTextView.setText(" " + stationRank + " (" + stationRankChange + ")");
-				
-				
+				else{
+					stationPopTextView.setText(" " + stationRank );
+					if(stationRankChange > 0)
+						rankImage.setImageDrawable(getView().getResources().getDrawable(R.drawable.up));
+					else
+						rankImage.setImageDrawable(getView().getResources().getDrawable(R.drawable.down));
+					rankImage.setVisibility(rankImage.VISIBLE);
+					loadingLabel.setVisibility(loadingLabel.INVISIBLE);
+					stationPopTextView.setVisibility(stationPopTextView.VISIBLE);
+				}
 			}
 			catch(JSONException e){
 				Log.e("ERROR", e.getMessage());
@@ -133,6 +142,8 @@ public class StationDetailFragment extends DialogFragment {
 		stationPopTextView = (TextView) view.findViewById(R.id.stationPopTextView);
 		getDirectionsButton = (Button) view.findViewById(R.id.getDirectionsButton);
 		dismissDialogButton = (Button) view.findViewById(R.id.dismissDialogButton);
+		rankImage = (ImageView) view.findViewById(R.id.rankImage);
+		loadingLabel = (TextView) view.findViewById(R.id.loadingLabel);
 		
 		getDirectionsButton.setOnClickListener(new OnClickListener() {
 
@@ -185,6 +196,8 @@ public class StationDetailFragment extends DialogFragment {
 		String stationPopUrl = getString(R.string.station_pop_json_url).replace("STATION_ID", Integer.toString(bikeStation.getStationId()));
 		new LoadStationPopularityTask().execute(new String[] { stationPopUrl });
         
+		rankImage.setVisibility(rankImage.INVISIBLE);
+		
         return view;
     }   
 
