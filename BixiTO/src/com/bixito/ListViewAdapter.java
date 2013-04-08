@@ -107,13 +107,14 @@ public class ListViewAdapter extends BaseAdapter {
 			boolean gpsIsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 			boolean networkLocationIsEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 			
-			if(gpsIsEnabled){
-				//Use gps to locate the user
-				userGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			}
-			else if(networkLocationIsEnabled){
+			
+			if(networkLocationIsEnabled){
 				//Locate user based on their network (less accurate)
 	            userNetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			}
+			else if(gpsIsEnabled){
+				//Use gps to locate the user
+				userGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			}
 			else{
 				//TODO Show dialog telling user to enable location services
