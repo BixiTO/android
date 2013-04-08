@@ -189,6 +189,9 @@ public class ListViewFragment extends SherlockListFragment implements SearchView
 		}else{
 			//If this fragment has just been shown, select the List tab
 			shareStationList.selectListTab();
+			
+			//reset filter
+			adapter.getFilter().filter("");
 		}
 		
 	}
