@@ -16,25 +16,33 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.SearchView;
 
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.bixito.station.BikeStation;
 import com.bixito.station.StationParser;
 
-public class ListViewFragment extends ListFragment {
+public class ListViewFragment extends SherlockListFragment implements SearchView.OnQueryTextListener {
 
 	static private StationParser stationParser;
 	static private ArrayList<BikeStation> stationList;
 	ProgressDialog dialog;
+	ListViewAdapter adapter;
 
 	ShareStationList shareStationList;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setHasOptionsMenu(true);
+		Log.d("DEBUG", "OptionsMenu set to true");
 		// Check if the savedInstanceState is null if so, initialize it
 		if (savedInstanceState == null) {
 			Log.d("DEBUG", "savedInstanceState was null in ListViewFrag");
@@ -57,6 +65,12 @@ public class ListViewFragment extends ListFragment {
 		}
 
 	}
+	
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.list_view, container, false);
+
+        return view;
+    }   
 
 	public boolean loadStationList() {
 		//Check to make sure internet connection is available
@@ -110,7 +124,7 @@ public class ListViewFragment extends ListFragment {
 		protected void onPostExecute(Void unused) {
 			dialog.dismiss();
 			try{
-				ListViewAdapter adapter = new ListViewAdapter(getActivity(), stationList);
+				adapter = new ListViewAdapter(getActivity(), stationList);
 				setListAdapter(adapter);
 				
 				// Send the list over to the map fragment via the activity
@@ -196,6 +210,32 @@ public class ListViewFragment extends ListFragment {
 	    else
 	    	return false;
 	    
+	}
+
+	@Override
+	public boolean onQueryTextChange(String query) {
+		adapter.getFilter().filter(query);
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		Log.d("DEBUG", "OptionsMenu Inflate called in ListViewFragment");
+		inflater.inflate(R.menu.list_view_menu, menu);
+		
+		MenuItem searchItem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) searchItem.getActionView();
+		
+		searchView.setOnQueryTextListener(this);
+		
+		//getActivity().getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 	}
 
 }

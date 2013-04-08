@@ -153,7 +153,7 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 	
 	private void initMap(){
 		UiSettings mapsSettings = getMap().getUiSettings();
-		
+
 		map = getMap();
 		
 		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener(){

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
 
 import com.bixito.station.BikeStation;
@@ -15,7 +16,8 @@ import com.bixito.station.BikeStation;
 public class ListViewAdapter extends BaseAdapter {
 
 	private Context context;
-	private ArrayList<BikeStation> bikeStations;
+	private ArrayList<BikeStation> bikeStationsToDisplay;
+	private ArrayList<BikeStation> bikeStationsOriginal;
 	
 	public ListViewAdapter(Context context, ArrayList<BikeStation> bStations){
 		//save the current activity context		
@@ -23,8 +25,8 @@ public class ListViewAdapter extends BaseAdapter {
 		
 		//sort the BikeStation's by name
 		java.util.Collections.sort(bStations, new MyComparator());
-		
-		this.bikeStations = bStations;
+		this.bikeStationsOriginal = (ArrayList<BikeStation>) bStations.clone();
+		this.bikeStationsToDisplay = bStations;
 	}
 	
 	//custom comparator used to sort BikeStation's by name
@@ -39,11 +41,11 @@ public class ListViewAdapter extends BaseAdapter {
 	 * Returns the number of bike stations.
 	 */
 	public int getCount() {
-		return bikeStations.size();
+		return bikeStationsToDisplay.size();
 	}
 
 	public Object getItem(int position) {
-		return bikeStations.get(position);
+		return bikeStationsToDisplay.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -51,7 +53,7 @@ public class ListViewAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		BikeStation station = bikeStations.get(position);
+		BikeStation station = bikeStationsToDisplay.get(position);
 		
 		//If the view for the item hasn't been created yet, create it
 		if(convertView == null){
@@ -72,4 +74,38 @@ public class ListViewAdapter extends BaseAdapter {
 		
 	}
 
+	
+	public Filter getFilter(){
+		return new Filter(){
+
+			@Override
+			protected FilterResults performFiltering(CharSequence searchString) {
+				FilterResults results = new FilterResults();
+				ArrayList<BikeStation> stationResults = new ArrayList<BikeStation>();
+				
+				if(searchString == null){
+					results.values = bikeStationsToDisplay;
+				}
+				else{
+					for(BikeStation s : bikeStationsOriginal){
+						if(s.getStationName().toLowerCase().contains(searchString))
+							stationResults.add(s);
+					}
+					results.values = stationResults;
+					return results;
+				}
+				
+				return null;
+			}
+
+			@Override
+			protected void publishResults(CharSequence searchString, FilterResults results) {
+				bikeStationsToDisplay = (ArrayList<BikeStation>) results.values;
+				notifyDataSetChanged();
+				
+			}
+			
+		};
+	}
+	
 }
