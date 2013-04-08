@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,7 +161,9 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				Intent intent = new Intent(getActivity(), StationDetailActivity.class);
+				Intent intent = new Intent(getActivity(), StationDetailFragment.class);
+				intent.addFlags(Intent.FLAG_DEBUG_LOG_RESOLUTION);
+			    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				String selectedStationTitle = marker.getTitle();
 				int selectedStation = -1;
 				if(stationList != null){
@@ -171,8 +174,8 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 						}
 					}
 					if(selectedStation != -1){
-						intent.putExtra("com.bixito.station.BikeStation", stationList.get(selectedStation));
-						startActivity(intent);
+						DialogFragment detailsFrag = StationDetailFragment.newInstance(stationList.get(selectedStation));
+						detailsFrag.show(getFragmentManager(), "dialog");
 					}
 					else{
 						Log.w("WARNING", "Could not find station with name: " + selectedStationTitle);

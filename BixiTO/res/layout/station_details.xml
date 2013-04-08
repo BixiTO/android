@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" >
 
     <TextView
         android:id="@+id/stationIsPublicLabel"
@@ -28,14 +29,6 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/stationNameTextView"
         android:text="@string/station_pop_label" />
-
-    <TextView
-        android:id="@+id/stationLastUpdatedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="stationLastUpdatedTextView" />
 
     <TextView
         android:id="@+id/stationIsLockedLabel"
@@ -84,5 +77,51 @@
         android:layout_below="@+id/stationIsPublicLabel"
         android:layout_toRightOf="@+id/stationIsLockedLabel"
         android:text="stationIsLockedTextView" />
+
+    <TextView
+        android:id="@+id/stationLastUpdatedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stationIsTempTextView"
+        android:layout_centerHorizontal="true"
+        android:text="stationLastUpdatedTextView" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/stationLastUpdatedTextView"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/divider"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/dismissDialogButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="@string/dismiss_dialog_button_text" />
+
+        <View
+            android:id="@+id/divder2"
+            android:layout_width="1dp"
+            android:layout_height="40dp"
+            android:background="?android:attr/dividerVertical" />
+
+        <Button
+            android:id="@+id/getDirectionsButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0px"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="@string/get_directions_button_text" />
+    </LinearLayout>
 
 </RelativeLayout>

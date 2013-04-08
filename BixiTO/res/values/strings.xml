@@ -25,7 +25,8 @@
 	<string name="station_is_public_label">Public station:</string>
 	<string name="station_is_locked_label">Station locked:</string>
 	<string name="station_is_temp_label">Station is temporary:</string>
-	<string name="station_last_update_label">Station status last updated:</string>
+	<string name="station_last_update_label">Last updated:</string>
+	
 	
 	<string name="station_is_public_true">Yes</string>
 	<string name="station_is_public_false">No</string>
@@ -40,7 +41,9 @@
 	<string name="station_pop_error">Error loading station popularity</string>
 	<string name="station_pop_low">Low</string>
 	
-	
+	<string name="get_directions_button_text">Get Directions</string>
+	<string name="dismiss_dialog_button_text">Dismiss</string>
+		
 	<string name="map_view_fragment_tag">map_frag</string>
 	<string name="list_view_fragment_tag">list_frag</string>
     
