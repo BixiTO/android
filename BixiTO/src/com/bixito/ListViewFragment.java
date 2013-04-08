@@ -42,7 +42,7 @@ public class ListViewFragment extends SherlockListFragment implements SearchView
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-		Log.d("DEBUG", "OptionsMenu set to true");
+
 		// Check if the savedInstanceState is null if so, initialize it
 		if (savedInstanceState == null) {
 			Log.d("DEBUG", "savedInstanceState was null in ListViewFrag");
@@ -158,11 +158,6 @@ public class ListViewFragment extends SherlockListFragment implements SearchView
 		
 		//share the selected bike station via the activity
 		shareStationList.shareSelectedStation(selectedStation);
-		
-		
-		//Intent i = new Intent(getActivity(), StationDetailActivity.class);
-		//i.putExtra("com.bixito.station.BikeStation", selectedStation);
-		//startActivity(i);
 
 	}
 
@@ -220,14 +215,12 @@ public class ListViewFragment extends SherlockListFragment implements SearchView
 
 	@Override
 	public boolean onQueryTextSubmit(String arg0) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		Log.d("DEBUG", "OptionsMenu Inflate called in ListViewFragment");
 		inflater.inflate(R.menu.list_view_menu, menu);
 		
 		MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -235,7 +228,6 @@ public class ListViewFragment extends SherlockListFragment implements SearchView
 		
 		searchView.setOnQueryTextListener(this);
 		
-		//getActivity().getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 	}
 
 }

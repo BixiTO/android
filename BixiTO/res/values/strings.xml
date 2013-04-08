@@ -13,6 +13,7 @@
 	<string name="google_maps_missing">You must have Google Maps installed to use this feature.</string>
 	<string name="google_maps_install_button">Install</string>
 	<string name="refresh_button_text">Refresh</string>
+	<string name="search_button_text">Search</string>
 	
 	<string name="error_loading_list_error">An error has occurred while loading the station list.</string>
 	<string name="error_loading_list_okay_button">OK</string>
