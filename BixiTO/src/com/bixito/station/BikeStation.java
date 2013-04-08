@@ -11,6 +11,7 @@ public class BikeStation implements Parcelable {
 	long lastCommWithServer;
 	double latitude;
 	double longitude;
+	double absoluteDistanceFromUser;
 	boolean installed;
 	boolean locked;
 	boolean temporary;
@@ -261,7 +262,30 @@ public class BikeStation implements Parcelable {
 	public void setLatestUpdateTime(long latestUpdateTime) {
 		this.latestUpdateTime = latestUpdateTime;
 	}
+	
+	
+	/**
+	 * @return the absoluteDistanceFromUser
+	 */
+	public double getAbsoluteDistanceFromUser() {
+		return absoluteDistanceFromUser;
+	}
+	
 
+	/**
+	 * @param userLatitude used to calculate absoluteDistanceFromUser
+	 * @param userLongitude used to calculate absoluteDistanceFromUser
+	 */
+	public void calculateDistanceFromUser(double userLatitude, double userLongitude) {
+		//calculate the absolute difference between the stations's coordinates and the user's coordinates
+		double diffLat = Math.abs(this.latitude) - Math.abs(userLatitude);
+		double diffLong = Math.abs(this.longitude) - Math.abs(userLongitude);
+		
+		//add the two differences to condense the result
+		this.absoluteDistanceFromUser = Math.abs(diffLat) + Math.abs(diffLong);
+	}
+	
+	
 	@Override
 	public int describeContents() {
 		return 0;
