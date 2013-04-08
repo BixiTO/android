@@ -212,13 +212,13 @@ public class MapViewFragment extends SupportMapFragment implements LocationListe
 			boolean gpsIsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 			boolean networkLocationIsEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 			
-			if(gpsIsEnabled){
-				//Use gps to locate the user
-				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, updateFreq, updateDist, this);
-			}
-			else if(networkLocationIsEnabled){
+			if(networkLocationIsEnabled){
 				//Locate user based on their network (less accurate)
 				locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, updateFreq, updateDist, this);
+			}
+			else if(gpsIsEnabled){
+				//Use gps to locate the user
+				locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, updateFreq, updateDist, this);
 			}
 			else{
 				//TODO Show dialog telling user to enable location services
