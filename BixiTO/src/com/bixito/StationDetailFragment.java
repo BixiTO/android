@@ -105,19 +105,25 @@ public class StationDetailFragment extends DialogFragment {
 
 				stationRank = jsonObject.getInt("rank");
 				stationRankChange = jsonObject.getInt("upordown");
-				
-				if(stationRank > 125)
-					stationPopTextView.setText(getString(R.string.station_pop_low));
-				else{
-					stationPopTextView.setText(" " + stationRank );
-					if(stationRankChange > 0)
-						rankImage.setImageDrawable(getView().getResources().getDrawable(R.drawable.up));
-					else
-						rankImage.setImageDrawable(getView().getResources().getDrawable(R.drawable.down));
+
+				stationPopTextView.setText(getString(R.string.station_pop_low));
+				stationPopTextView.setText(" " + stationRank );
+				if(stationRankChange > 0){
+					rankImage.setImageDrawable(getView().getResources().getDrawable(R.drawable.up));
 					rankImage.setVisibility(rankImage.VISIBLE);
 					loadingLabel.setVisibility(loadingLabel.INVISIBLE);
-					stationPopTextView.setVisibility(stationPopTextView.VISIBLE);
 				}
+				else if(stationRankChange < 0){
+					rankImage.setImageDrawable(getView().getResources().getDrawable(R.drawable.down));
+					rankImage.setVisibility(rankImage.VISIBLE);
+					loadingLabel.setVisibility(loadingLabel.INVISIBLE);
+				}
+				else{
+					//Rank didn't change
+					rankImage.setVisibility(rankImage.INVISIBLE);
+					loadingLabel.setVisibility(loadingLabel.INVISIBLE);
+				}
+				stationPopTextView.setVisibility(stationPopTextView.VISIBLE);
 			}
 			catch(JSONException e){
 				Log.e("ERROR", e.getMessage());
