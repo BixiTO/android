@@ -36,9 +36,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapViewFragment extends SupportMapFragment implements LocationListener, LocationSource {
 	ArrayList<BikeStation> stationList = null;
 	ArrayList<Marker> markerList = null;
-	static final Float initialZoomLevel = 18F;
+	static final Float initialZoomLevel = 13F;
 	static final double initialLongitude = -79.40;
-	static final double initialLatitude = 43.65;
+	static final double initialLatitude = 43.653;
 	static LatLng initialCameraLocation = new LatLng(initialLatitude, initialLongitude);
 	static final int initialAnimateTime = 1;
 	
