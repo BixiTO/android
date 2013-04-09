@@ -154,7 +154,7 @@ public class ListViewFragment extends SherlockListFragment implements SearchView
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		BikeStation selectedStation = stationList.get(position);
+		BikeStation selectedStation = (BikeStation) l.getItemAtPosition(position);
 		
 		//share the selected bike station via the activity
 		shareStationList.shareSelectedStation(selectedStation);
