@@ -198,7 +198,7 @@ public class ListViewAdapter extends BaseAdapter {
 				}
 				else{
 					for(BikeStation s : bikeStationsOriginal){
-						if(s.getStationName().toLowerCase().contains(searchString))
+						if(s.getStationName().toLowerCase().contains(searchString.toString().toLowerCase()))
 							stationResults.add(s);
 					}
 					results.values = stationResults;
